@@ -5,13 +5,15 @@ import sys
 
 
 pygame.init()
-HEIGHT = 500;WIDTH=850
+HEIGHT = 800;WIDTH=1200
+
+cell_size=10
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 all_life = pygame.sprite.Group()
 
-counter = 100                                       #update-time speed ,in milli sec
+counter = 50                                     #update-time speed ,in milli sec
 timer_event = pygame.USEREVENT + 1
 pygame.time.set_timer(timer_event,counter)
 
@@ -19,7 +21,7 @@ pygame.time.set_timer(timer_event,counter)
 class Life(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface([5,5])
+        self.image = pygame.Surface([cell_size,cell_size])
         self.image.fill("white")
         self.rect = self.image.get_rect()
         self.rect.x = x
@@ -47,7 +49,7 @@ class Life(pygame.sprite.Sprite):
 
     def check_neighbor(self,x,y):
         try:
-            if life[self.rect.x//5 + x][ self.rect.y//5 + y].alive:
+            if life[self.rect.x//cell_size + x][ self.rect.y//cell_size + y].alive:
                 self.neighbor+=1
         except:
             None
@@ -61,9 +63,9 @@ class Life(pygame.sprite.Sprite):
 
 
 life =[]
-for i,x in enumerate(range(0,WIDTH,5)):
+for i,x in enumerate(range(0,WIDTH,cell_size)):
     a = []
-    for j,y in enumerate(range(0,HEIGHT,5)):    
+    for j,y in enumerate(range(0,HEIGHT,cell_size)):    
         a.append(Life(x,y))
         all_life.add(a[j])
     life.append(a)
@@ -81,32 +83,117 @@ def draw_text(surf, text, size, x, y):
 
 
 
-# def create_alive_group(x,y):
-#     life[x][y-1].alive = True
-#     life[x+1][y].alive = True
-#     life[x-1][y+1].alive = True
-#     life[x][y+1].alive = True
-#     life[x+1][y+1].alive = True
+def create_alive_group(x,y):
+    life[x][y-1].alive = True
+    life[x+1][y].alive = True
+    life[x-1][y+1].alive = True
+    life[x][y+1].alive = True
+    life[x+1][y+1].alive = True
 
-# def create_alive_group2(x,y):
-#     life[x][y+1].alive = True
-#     life[x-1][y].alive = True
-#     life[x+1][y-1].alive = True
-#     life[x][y-1].alive = True
-#     life[x-1][y-1].alive = True
+def create_alive_group2(x,y):
+    life[x][y+1].alive = True
+    life[x-1][y].alive = True
+    life[x+1][y-1].alive = True
+    life[x][y-1].alive = True
+    life[x-1][y-1].alive = True
    
 
-# def create_three(x,y):
-#     life[x+1][y-1].alive = True
-#     life[x-1][y].alive = True
-#     life[x][y+1].alive = True
+def create_three(x,y):
+    life[x+1][y-1].alive = True
+    life[x-1][y].alive = True
+    life[x][y+1].alive = True
+ 
+def make_alive(x,y,i,j):
+    life[x+i][y+j].alive = True
+    
 
-# def spawn_big_square(x,y):
-#     for i in range(0,20):
-#         for j in range(0,20):
-#             if i ==j:
-#                 continue
-#             life[x + i][y + j].alive =True
+def create_shape(x,y):
+    make_alive(x,y,0,3)
+    make_alive(x,y,0,4)
+    make_alive(x,y,1,3)
+    make_alive(x,y,1,4)
+    make_alive(x,y,10,3)
+    make_alive(x,y,10,4)
+    make_alive(x,y,10,5)
+    make_alive(x,y,11,2)
+    make_alive(x,y,11,6)
+    make_alive(x,y,12,1)
+    make_alive(x,y,12,7)
+    make_alive(x,y,13,1)
+    make_alive(x,y,13,7)
+    make_alive(x,y,14,4)
+    make_alive(x,y,15,2)
+    make_alive(x,y,15,6)
+    make_alive(x,y,16,3)
+    make_alive(x,y,16,4)
+    make_alive(x,y,16,5)
+    make_alive(x,y,17,4)
+    make_alive(x,y,20,1)
+    make_alive(x,y,20,2)
+    make_alive(x,y,20,3)
+    make_alive(x,y,21,1)
+    make_alive(x,y,21,2)
+    make_alive(x,y,21,3)
+    make_alive(x,y,22,0)
+    make_alive(x,y,22,4)
+    make_alive(x,y,24,-1)
+    make_alive(x,y,24,0)
+    make_alive(x,y,24,4)
+    make_alive(x,y,24,5)
+    make_alive(x,y,34,1)
+    make_alive(x,y,34,2)
+    make_alive(x,y,35,1)
+    make_alive(x,y,35,2)
+
+def create_shape_negetive(x,y):
+    make_alive(x,y,0,-3)
+    make_alive(x,y,0,-4)
+    make_alive(x,y,-1,-3)
+    make_alive(x,y,-1,-4)
+    make_alive(x,y,-10,-3)
+    make_alive(x,y,-10,-4)
+    make_alive(x,y,-10,-5)
+    make_alive(x,y,-11,-2)
+    make_alive(x,y,-11,-6)
+    make_alive(x,y,-12,-1)
+    make_alive(x,y,-12,-7)
+    make_alive(x,y,-13,-1)
+    make_alive(x,y,-13,-7)
+    make_alive(x,y,-14,-4)
+    make_alive(x,y,-15,-2)
+    make_alive(x,y,-15,-6)
+    make_alive(x,y,-16,-3)
+    make_alive(x,y,-16,-4)
+    make_alive(x,y,-16,-5)
+    make_alive(x,y,-17,-4)
+    make_alive(x,y,-20,-1)
+    make_alive(x,y,-20,-2)
+    make_alive(x,y,-20,-3)
+    make_alive(x,y,-21,-1)
+    make_alive(x,y,-21,-2)
+    make_alive(x,y,-21,-3)
+    make_alive(x,y,-22,0)
+    make_alive(x,y,-22,-4)
+    make_alive(x,y,-24,1)
+    make_alive(x,y,-24,0)
+    make_alive(x,y,-24,-4)
+    make_alive(x,y,-24,-5)
+    make_alive(x,y,-34,-1)
+    make_alive(x,y,-34,-2)
+    make_alive(x,y,-35,-1)
+    make_alive(x,y,-35,-2)
+
+
+
+
+
+
+def spawn_big_square(x,y):
+     for i in range(0,20):
+         for j in range(0,20):
+             if i ==j:
+                 continue
+             life[x + i][y + j].alive =True
 
 
 def game_loop():
@@ -114,7 +201,7 @@ def game_loop():
     while True:
         screen.fill("black")  
         all_life.draw(screen)
-        clock.tick(30)
+        clock.tick(10)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
@@ -127,15 +214,15 @@ def game_loop():
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 point = pygame.mouse.get_pos()
-                life[point[0]//5][point[1]//5].alive =True
+                life[point[0]//cell_size][point[1]//cell_size].alive =True
 
             elif event.type == timer_event:
                 all_life.update()
 
                 if (not pause):
                     pygame.display.set_caption("Esc to pause     fps:"+str(int(clock.get_fps())) )
-                    for x in range(0,WIDTH//5):
-                        for y in range(0,HEIGHT//5):    
+                    for x in range(0,WIDTH//cell_size):
+                        for y in range(0,HEIGHT//cell_size):    
                             life[x][y].update_state()
 
 
@@ -145,7 +232,15 @@ def game_loop():
         pygame.display.update()
 
 
-if __name__ ==  "__main__":  
+if __name__ ==  "__main__":
+    
+    create_shape(10,10)
+    create_shape_negetive(80,50)
+
+    spawn_big_square(80,0)
+    #spawn_big_square(10,40)
+
+    	  
     game_loop()
 
 
